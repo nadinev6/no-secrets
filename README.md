@@ -6,6 +6,27 @@ A battle-tested project template with **security-first** setup and production-re
 
 ---
 
+## 📑 Table of Contents
+
+- [ Quick Start](#-quick-start)
+- [What's Included](#️-whats-included)
+- [ Available Commands](#-available-commands)
+- [ How It Works](#-how-it-works)
+- [ Security Features Explained](#-security-features-explained)
+- [ What's In The Box](#-whats-in-the-box)
+- [ Perfect For](#-perfect-for)
+- [ After `make setup`](#️-after-make-setup)
+- [ FAQ](#-faq)
+- [ If You Think You've Exposed Secrets](#-if-you-think-youve-exposed-secrets)
+- [ More Information](#-more-information)
+- [ Contributing](#-contributing)
+- [ License](#-license)
+- [ Learn More](#-learn-more)
+- [ Next Steps](#-next-steps)
+- [ Questions?](#-questions)
+
+---
+
 ## ⚡ Quick Start
 
 ```bash
@@ -15,8 +36,7 @@ gh repo create my-project --template=YOUR-USERNAME/GH-template
 # 2. Clone and setup
 git clone https://github.com/YOUR-USERNAME/my-project
 cd my-project
-make init          # Initialize with pre-commit
-make setup-python  # Or setup-node / setup-go
+make setup          # One command - auto-detects everything!
 ```
 
 # Done! 🎉
@@ -29,8 +49,10 @@ This template comes pre-configured with industry best practices.
 ### Local Protection
 
 - ✅ **Pre-commit hooks** - Detects secrets before they're committed
+- ✅ **Gitleaks integration** - Scans ALL files including `.env.example` for real secrets
 - ✅ **Automatic validation** - Checks file sizes, YAML syntax, trailing whitespace
-- ✅ **Pattern detection** - Catches API keys, passwords, tokens, private keys
+- ✅ **Pattern detection** - Catches API keys, passwords, tokens, private keys (120+ patterns)
+- ✅ **Smart allowlisting** - Auto-allows obvious fake patterns like "test", "example", "fake"
 - ✅ **Comprehensive .gitignore** - Blocks all `.env.*` files and credential JSONs (including `.env.production`, `credentials.json`, service accounts)
 - ✅ **Example file support** - Allows `.env.example` and `*.example.json` for documentation
 
@@ -42,15 +64,18 @@ This template comes pre-configured with industry best practices.
 
 ### Developer Experience
 
-- ✅ **Single command setup** - `make setup` handles everything
+- ✅ **One-command setup** - `make setup` auto-detects and configures everything
+- ✅ **Prerequisites checker** - Verifies all required tools before setup
+- ✅ **Smart error messages** - Clear guidance when tools are missing
 - ✅ **Comprehensive .gitignore** - Covers environment files (`.env.*`), credentials (`*credentials*.json`, `*secret*.json`), and key files (`.pem`, `.key`, etc.)
 - ✅ **Helpful commands** - `make help` shows all available commands
 
 ## 📋 Available Commands
 
 ```bash
-make init                 # Initialize project with pre-commit (run this first!)
-make install-pre-commit   # Install pre-commit framework
+make setup                # Auto-detect and setup everything (recommended!)
+make check-prereqs        # Check if required tools are installed
+make init                 # Initialize project with pre-commit only
 make setup-python         # Setup Python virtual environment
 make setup-node           # Setup Node.js dependencies
 make setup-go             # Setup Go environment
@@ -149,6 +174,8 @@ Add this in your repo settings for extra safety:
 your-project/
 ├── Makefile                          # Make commands (setup, help, clean)
 ├── .gitignore                        # Ignore secrets, cache, OS files
+├── .gitleaksignore                   # Allowlist for fake/test secrets
+├── .gitleaks.toml                    # Gitleaks configuration
 ├── .pre-commit-config.yaml           # Local security hooks
 ├── .github/
 │   └── workflows/
@@ -170,19 +197,32 @@ your-project/
 
 ---
 
-## ⚙️ After `make init`
+## ⚙️ After `make setup`
 
-Once you run `make init`, you have:
+Once you run `make setup`, you have:
 
-1. **Pre-commit framework installed** - Runs on every commit
-2. **Gitleaks installed** - Detects 120+ secret patterns
-3. **Standard hooks active** - File validation, formatting checks, secret detection
-4. **Language-specific setup ready** - Choose Python, Node.js, or Go
-5. **Initial scan complete** - All existing files checked
+1. **Prerequisites verified** - All required tools checked
+2. **Pre-commit framework installed** - Runs on every commit
+3. **Gitleaks installed** - Detects 120+ secret patterns
+4. **Standard hooks active** - File validation, formatting checks, secret detection
+5. **Language environment ready** - Auto-detected and configured (Python venv/Node modules/Go deps)
+6. **Initial scan complete** - All existing files checked
 
-### Multi-Language Support
+### What Gets Auto-Detected
 
-The Makefile includes built-in setup for multiple languages:
+**Python projects:** Looks for `requirements.txt`, `setup.py`, `pyproject.toml`, or `Pipfile`
+- Creates virtual environment (`venv/`)
+- Installs dependencies if requirements.txt exists
+
+**Node.js projects:** Looks for `package.json`
+- Runs `npm install` automatically
+
+**Go projects:** Looks for `go.mod` or `go.sum`
+- Downloads dependencies with `go mod download`
+
+### Manual Language Setup
+
+If auto-detection doesn't work or you want specific setup:
 
 **Python:**
 ```bash
@@ -202,11 +242,6 @@ make setup-node
 make setup-go
 ```
 
-Run linters across all languages:
-```bash
-make lint
-```
-
 ---
 
 ## 🤔 FAQ
@@ -218,6 +253,18 @@ make lint
 ### Q: What if I need to bypass the hook?
 
 **A:** You can with `git commit --no-verify`, but don't. If the hook is blocking you, it's for a good reason.
+
+**For fake/test secrets:** Use one of these methods:
+1. **Inline comment**: `const fakeKey = "sk-test123"; // gitleaks:allow`
+2. **Add to .gitleaksignore**: Copy the fingerprint from the error and add it with a comment
+3. **Use obvious fake patterns**: Words like "example", "test", "fake" in the value are auto-allowed
+
+Example in `.env.example`:
+```
+API_KEY=your_api_key_here          # ✅ Safe - obvious placeholder
+API_KEY=sk-test-fake-key-12345     # ✅ Safe - contains "test" and "fake"
+API_KEY=sk-1a2b3c4d5e6f7g8h9i       # ❌ Blocked - looks real!
+```
 
 ### Q: Does this work on Windows?
 
@@ -342,7 +389,7 @@ This template helps you follow these best practices:
 ## 🚀 Next Steps
 
 1. **Use this template** for your next project
-2. **Run `make setup`** immediately after cloning
+2. **Run `make setup`** immediately after cloning (one command does it all!)
 3. **Add this to your standard process** - always use this template
 4. **Share with your team** - everyone should use it
 5. **Star this repo** if it helps you! ⭐

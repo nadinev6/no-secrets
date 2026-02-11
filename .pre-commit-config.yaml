@@ -14,6 +14,12 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
 
+  # Secret detection with gitleaks
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.2
+    hooks:
+      - id: gitleaks
+
   # Python linting
   - repo: https://github.com/psf/black
     rev: 24.1.1

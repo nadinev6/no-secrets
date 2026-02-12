@@ -38,18 +38,13 @@ A single exposed API key can cost **thousands in unauthorized API usage**. This 
 ### 🆕 For New Projects
 
 ```bash
-# 1. Use this template (click button above) or via CLI:
-gh repo create my-project --template=nadinev6/no-secrets
-
-# 2. Clone and setup
-git clone https://github.com/YOUR-USERNAME/my-project
+# 1. # Create from template (choose one)
+gh repo create my-project --template=nadinev6/no-secrets --public --clone
+gh repo create my-project --template=nadinev6/no-secrets --private --clone
 cd my-project
 
-# Mac/Linux:
-make setup          # One command - auto-detects everything!
-
-# Windows (PowerShell or CMD):
-setup.bat setup     # One command - auto-detects everything!
+make setup          # Mac/Linux
+.\setup.bat setup         # Windows
 ```
 
 ### 📦 For Existing Projects

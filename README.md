@@ -1,6 +1,6 @@
-# 🔑 Keep Your Secrets Safe 
-
-> A secure project template with pre-commit hooks and GitHub Actions
+<p align="center">
+  <img src="assets/Header.png" alt="No-Secrets" width="800">
+</p>
 
 ---
 
@@ -374,6 +374,11 @@ API_KEY=sk-1a2b3c4d5e6f7g8h9i       # ❌ Blocked - looks real!
 ---
 
 ## 🚨 If You Think You've Exposed Secrets
+
+<p align="center">
+  <img src="assets/Info.png" alt="Remediation Steps" width="700">
+</p>
+
 
 If you suspect you've already committed secrets, scan your history:
 

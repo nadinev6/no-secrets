@@ -66,27 +66,41 @@ pip install pre-commit
 pre-commit install
 ```
 
-**That's it!** Your existing project now has secret detection enabled.
-
-**Windows Users (Alternative Method):**
+**Windows Users:**
 
 ```powershell
-# Download config files
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaks.toml" -OutFile ".gitleaks.toml"
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaksignore" -OutFile ".gitleaksignore"
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/.pre-commit-config.yaml" -OutFile ".pre-commit-config.yaml"
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/setup.bat" -OutFile "setup.bat"
+curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitignore
+curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaks.toml
+curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaksignore
+curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.pre-commit-config.yaml
+curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/setup.bat
 
-# Add GitHub Actions workflow
-New-Item -ItemType Directory -Force -Path ".github\workflows"
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/.github/workflows/secret-scan.yml" -OutFile ".github\workflows\secret-scan.yml"
+mkdir .github\workflows
+curl.exe -o .github/workflows/secret-scan.yml https://raw.githubusercontent.com/nadinev6/no-secrets/main/.github/workflows/secret-scan.yml
 
-# Install and activate
 pip install pre-commit
-pre-commit install
+python -m pre_commit install
 ```
 
+**That's it!** Your existing project now has secret detection enabled.
+
+> **💡 Tip:** After setup, run `python -m pre_commit run --all-files` (Windows) or `pre-commit run --all-files` (Mac/Linux) to scan all existing files for secrets.
+
 # Done! 🎉
+
+> **⚠️ Important:** If you already committed files that should be ignored (like `node_modules`, `.env` files, etc.), they'll remain in git history even after adding `.gitignore`.
+> 
+> **To remove them:**
+> ```bash
+> # Remove from git tracking (but keep local files)
+> git rm -r --cached node_modules
+> git rm --cached .env
+> 
+> # Commit the removal
+> git commit -m "Remove ignored files from git tracking"
+> ```
+> 
+> For sensitive files already in history, see the [🚨 If You Think You've Exposed Secrets](#-if-you-think-youve-exposed-secrets) section.
 
 
 ## 🛡️ What is Included

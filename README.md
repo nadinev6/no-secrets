@@ -1,8 +1,14 @@
-# 🔒 Makefile Template with Pre-commit
+# 🔑 Keep Your Secrets Safe 
 
-A battle-tested project template with **security-first** setup and production-ready Makefile, perfect for developers who want to prevent secrets and API keys from ever being committed to git while maintaining clean, linted code.
+> A secure project template with pre-commit hooks and GitHub Actions
 
-> **Why this matters:** A single exposed API key can cost thousands in unauthorized API usage. This template prevents that AND ensures code quality from day one.
+---
+
+## 🛡️ Why This Matters
+
+A single exposed API key can cost **thousands in unauthorized API usage**. This template prevents that—automatically, on every commit.
+
+**Your secrets stay secret. Your code stays clean.**
 
 ---
 
@@ -31,7 +37,7 @@ A battle-tested project template with **security-first** setup and production-re
 
 ```bash
 # 1. Use this template (click button above) or via CLI:
-gh repo create my-project --template=YOUR-USERNAME/GH-template
+gh repo create my-project --template=nadinev6/no-secrets
 
 # 2. Clone and setup
 git clone https://github.com/YOUR-USERNAME/my-project

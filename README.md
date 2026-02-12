@@ -35,6 +35,8 @@ A single exposed API key can cost **thousands in unauthorized API usage**. This 
 
 ## ⚡ Quick Start
 
+https://github.com/nadinev6/no-secrets/assets/demo.mp4
+
 ### 🆕 For New Projects
 
 ```bash

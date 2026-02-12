@@ -35,6 +35,8 @@ A single exposed API key can cost **thousands in unauthorized API usage**. This 
 
 ## ⚡ Quick Start
 
+### 🆕 For New Projects
+
 ```bash
 # 1. Use this template (click button above) or via CLI:
 gh repo create my-project --template=nadinev6/no-secrets
@@ -45,10 +47,33 @@ cd my-project
 make setup          # One command - auto-detects everything!
 ```
 
+### 📦 For Existing Projects
+
+**Quick Setup (Mac/Linux):**
+
+```bash
+# Download config files
+curl -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaks.toml
+curl -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaksignore
+curl -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.pre-commit-config.yaml
+
+# Add GitHub Actions workflow
+mkdir -p .github/workflows
+curl -o .github/workflows/secret-scan.yml https://raw.githubusercontent.com/nadinev6/no-secrets/main/.github/workflows/secret-scan.yml
+
+# Install and activate
+pip install pre-commit
+pre-commit install
+```
+
+**That's it!** Your existing project now has secret detection enabled.
+
+> **Windows users:** Download the [ZIP file](https://github.com/nadinev6/no-secrets/archive/refs/heads/main.zip), extract and copy the files manually, then run `pip install pre-commit && pre-commit install`
+
 # Done! 🎉
 
 
-## 🛡️ What's Included
+## 🛡️ What is Included
 
 This template comes pre-configured with industry best practices.
 
@@ -274,11 +299,18 @@ API_KEY=sk-1a2b3c4d5e6f7g8h9i       # ❌ Blocked - looks real!
 
 ### Q: Does this work on Windows?
 
-**A:** Yes! Pre-commit hooks work on Windows (with WSL or Git Bash) and macOS/Linux.
+**A:** Yes! Pre-commit hooks work on Windows, macOS, and Linux. 
+
+**For Windows users:**
+- Use **PowerShell**, **Git Bash**, or **WSL** to run the setup commands
+- The `make` command requires installation on Windows:
+  - Via Chocolatey: `choco install make`
+  - Via WSL: Already included
+  - Or skip `make` and run commands directly: `pip install pre-commit && pre-commit install`
 
 ### Q: What about existing repositories?
 
-**A:** You can add this template to any existing project by copying the files. For cleaning history, see the section below on removing secrets.
+**A:** Yes! See the [Quick Start section](#-quick-start) for step-by-step instructions on adding this to an existing project. For cleaning existing secrets from history, see the section below on removing secrets.
 
 ### Q: Can I customize the rules?
 

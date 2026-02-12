@@ -44,7 +44,12 @@ gh repo create my-project --template=nadinev6/no-secrets
 # 2. Clone and setup
 git clone https://github.com/YOUR-USERNAME/my-project
 cd my-project
+
+# Mac/Linux:
 make setup          # One command - auto-detects everything!
+
+# Windows (PowerShell or CMD):
+setup.bat setup     # One command - auto-detects everything!
 ```
 
 ### 📦 For Existing Projects
@@ -68,7 +73,23 @@ pre-commit install
 
 **That's it!** Your existing project now has secret detection enabled.
 
-> **Windows users:** Download the [ZIP file](https://github.com/nadinev6/no-secrets/archive/refs/heads/main.zip), extract and copy the files manually, then run `pip install pre-commit && pre-commit install`
+**Windows Users (Alternative Method):**
+
+```powershell
+# Download config files
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaks.toml" -OutFile ".gitleaks.toml"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaksignore" -OutFile ".gitleaksignore"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/.pre-commit-config.yaml" -OutFile ".pre-commit-config.yaml"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/setup.bat" -OutFile "setup.bat"
+
+# Add GitHub Actions workflow
+New-Item -ItemType Directory -Force -Path ".github\workflows"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nadinev6/no-secrets/main/.github/workflows/secret-scan.yml" -OutFile ".github\workflows\secret-scan.yml"
+
+# Install and activate
+pip install pre-commit
+pre-commit install
+```
 
 # Done! 🎉
 
@@ -103,6 +124,7 @@ This template comes pre-configured with industry best practices.
 
 ## 📋 Available Commands
 
+**Mac/Linux (using Makefile):**
 ```bash
 make setup                # Auto-detect and setup everything (recommended!)
 make check-prereqs        # Check if required tools are installed
@@ -116,7 +138,21 @@ make clean                # Remove Python/Node.js caches
 make help                 # Show all available commands
 ```
 
-For a complete overview, run: `make help`
+**Windows (using setup.bat):**
+```powershell
+setup.bat setup           # Auto-detect and setup everything (recommended!)
+setup.bat check-prereqs   # Check if required tools are installed
+setup.bat init            # Initialize project with pre-commit only
+setup.bat setup-python    # Setup Python virtual environment
+setup.bat setup-node      # Setup Node.js dependencies
+setup.bat setup-go        # Setup Go environment
+setup.bat lint            # Run all linters
+setup.bat test            # Run project tests
+setup.bat clean           # Remove Python/Node.js caches
+setup.bat help            # Show all available commands
+```
+
+For a complete overview, run: `make help` (Mac/Linux) or `setup.bat help` (Windows)
 
 ---
 
@@ -203,7 +239,8 @@ Add this in your repo settings for extra safety:
 
 ```
 your-project/
-├── Makefile                          # Make commands (setup, help, clean)
+├── Makefile                          # Make commands (Mac/Linux)
+├── setup.bat                         # Batch commands (Windows)
 ├── .gitignore                        # Ignore secrets, cache, OS files
 ├── .gitleaksignore                   # Allowlist for fake/test secrets
 ├── .gitleaks.toml                    # Gitleaks configuration
@@ -257,20 +294,31 @@ If auto-detection doesn't work or you want specific setup:
 
 **Python:**
 ```bash
+# Mac/Linux:
 make setup-python
-source venv/bin/activate  # macOS/Linux
-# or
-venv\Scripts\activate     # Windows
+source venv/bin/activate
+
+# Windows:
+setup.bat setup-python
+venv\Scripts\activate
 ```
 
 **Node.js:**
 ```bash
+# Mac/Linux:
 make setup-node
+
+# Windows:
+setup.bat setup-node
 ```
 
 **Go:**
 ```bash
+# Mac/Linux:
 make setup-go
+
+# Windows:
+setup.bat setup-go
 ```
 
 ---
@@ -299,14 +347,26 @@ API_KEY=sk-1a2b3c4d5e6f7g8h9i       # ❌ Blocked - looks real!
 
 ### Q: Does this work on Windows?
 
-**A:** Yes! Pre-commit hooks work on Windows, macOS, and Linux. 
+**A:** Yes! Pre-commit hooks work perfectly on Windows, macOS, and Linux.
 
-**For Windows users:**
-- Use **PowerShell**, **Git Bash**, or **WSL** to run the setup commands
-- The `make` command requires installation on Windows:
-  - Via Chocolatey: `choco install make`
-  - Via WSL: Already included
-  - Or skip `make` and run commands directly: `pip install pre-commit && pre-commit install`
+**For Windows users, you have 3 options:**
+
+1. **Use the provided setup.bat file (Recommended):**
+   ```powershell
+   setup.bat setup
+   ```
+   This batch file provides all the same functionality as the Makefile.
+
+2. **Use WSL (Windows Subsystem for Linux):**
+   ```bash
+   make setup
+   ```
+   WSL includes `make` by default and works exactly like Mac/Linux.
+
+3. **Install Make for Windows:**
+   - Via Chocolatey: `choco install make`
+   - Via Scoop: `scoop install make`
+   - Or run commands directly: `pip install pre-commit && pre-commit install`
 
 ### Q: What about existing repositories?
 
@@ -427,7 +487,9 @@ This template helps you follow these best practices:
 ## 🚀 Next Steps
 
 1. **Use this template** for your next project
-2. **Run `make setup`** immediately after cloning (one command does it all!)
+2. **Run setup immediately** after cloning (one command does it all!)
+   - Mac/Linux: `make setup`
+   - Windows: `setup.bat setup`
 3. **Add this to your standard process** - always use this template
 4. **Share with your team** - everyone should use it
 5. **Star this repo** if it helps you! ⭐

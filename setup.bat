@@ -93,9 +93,14 @@ where pip >nul 2>&1 || (
     echo   - Windows: Download from https://python.org
     exit /b 1
 )
-REM Check if pre-commit is already installed
-python -m pre-commit --version >nul 2>&1 || pip install pre-commit
-python -m pre-commit install
+REM Install pre-commit if not already installed
+python -m pip show pre-commit >nul 2>&1 || (
+    echo Installing pre-commit package...
+    pip install pre-commit
+)
+REM Install the git hooks
+echo Installing pre-commit hooks...
+python -m pre_commit install
 if errorlevel 1 (
     echo %YELLOW%[X] Failed to install pre-commit hooks%RESET%
     exit /b 1
@@ -211,7 +216,7 @@ exit /b 0
 
 :lint
 echo %BLUE%Running linters...%RESET%
-python -m pre-commit run --all-files
+python -m pre_commit run --all-files
 echo %GREEN%[OK] Linting complete%RESET%
 exit /b 0
 

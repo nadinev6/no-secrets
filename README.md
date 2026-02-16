@@ -60,6 +60,7 @@ make setup          # Mac/Linux
 curl -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaks.toml
 curl -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaksignore
 curl -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.pre-commit-config.yaml
+curl -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitattributes
 
 # Add GitHub Actions workflow
 mkdir -p .github/workflows
@@ -68,6 +69,10 @@ curl -o .github/workflows/secret-scan.yml https://raw.githubusercontent.com/nadi
 # Install and activate
 pip install pre-commit
 pre-commit install
+
+# Normalize line endings for existing files (one-time fix)
+git add --renormalize .
+git commit -m "Normalize line endings"
 ```
 
 **Windows Users:**
@@ -77,6 +82,7 @@ curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitignor
 curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaks.toml
 curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitleaksignore
 curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.pre-commit-config.yaml
+curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/.gitattributes
 curl.exe -O https://raw.githubusercontent.com/nadinev6/no-secrets/main/setup.bat
 
 mkdir .github\workflows
@@ -84,6 +90,10 @@ curl.exe -o .github/workflows/secret-scan.yml https://raw.githubusercontent.com/
 
 pip install pre-commit
 python -m pre_commit install
+
+# Normalize line endings for existing files (one-time fix)
+git add --renormalize .
+git commit -m "Normalize line endings"
 ```
 
 **That's it!** Your existing project now has secret detection enabled.
